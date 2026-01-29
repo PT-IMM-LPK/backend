@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ========================================
+// TABLE: DEPARTEMEN
+// ========================================
+model Departemen {
+  nomor          Int       @id @default(autoincrement())
+  namaDepartemen String    @unique @db.VarChar(100)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relasi ke Pengguna
+  pengguna Pengguna[]
+
+  @@map("departemen")
+}
+
+// ========================================
+// TABLE: PENGGUNA
+// ========================================
+model Pengguna {
+  nomor         Int       @id @default(autoincrement())
+  nama          String    @db.VarChar(100)
+  nomorTelepon  String?   @db.VarChar(20)
+  email         String    @unique @db.VarChar(100)
+  password      String    // Untuk login (di-hash)
+  tanggalLahir  DateTime?
+  role          Role      @default(KARYAWAN)
+  
+  // Foreign Key ke Departemen
+  departemenId  Int?
+  departemen    Departemen? @relation(fields: [departemenId], references: [nomor])
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("pengguna")
+}
+
+// ========================================
+// ENUM: ROLE
+// ========================================
+enum Role {
+  KARYAWAN      // Karyawan biasa
+  SUPERVISOR    // Supervisor/Manager
+  ADMIN         // Admin
+  SUPER_ADMIN   // Super Admin
+}
