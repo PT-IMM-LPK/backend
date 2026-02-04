@@ -59,60 +59,6 @@ async function main() {
       role: 'ADMIN',
       departemenId: departemenList.find(d => d.namaDepartemen === 'IT Department')?.nomor
     },
-    {
-      nama: 'Supervisor HR',
-      email: 'supervisor.hr@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567892',
-      tanggalLahir: new Date('1990-03-10'),
-      role: 'SUPERVISOR',
-      departemenId: departemenList.find(d => d.namaDepartemen === 'HR Department')?.nomor
-    },
-    {
-      nama: 'Supervisor Finance',
-      email: 'supervisor.finance@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567893',
-      tanggalLahir: new Date('1987-07-25'),
-      role: 'SUPERVISOR',
-      departemenId: departemenList.find(d => d.namaDepartemen === 'Finance Department')?.nomor
-    },
-    {
-      nama: 'John Doe',
-      email: 'john.doe@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567894',
-      tanggalLahir: new Date('1995-11-08'),
-      role: 'KARYAWAN',
-      departemenId: departemenList.find(d => d.namaDepartemen === 'Marketing Department')?.nomor
-    },
-    {
-      nama: 'Jane Smith',
-      email: 'jane.smith@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567895',
-      tanggalLahir: new Date('1993-09-12'),
-      role: 'KARYAWAN',
-      departemenId: departemenList.find(d => d.namaDepartemen === 'Sales Department')?.nomor
-    },
-    {
-      nama: 'Bob Wilson',
-      email: 'bob.wilson@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567896',
-      tanggalLahir: new Date('1992-04-18'),
-      role: 'KARYAWAN',
-      departemenId: departemenList.find(d => d.namaDepartemen === 'Operations Department')?.nomor
-    },
-    {
-      nama: 'Alice Brown',
-      email: 'alice.brown@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567897',
-      tanggalLahir: new Date('1994-12-05'),
-      role: 'KARYAWAN',
-      departemenId: departemenList.find(d => d.namaDepartemen === 'Logistics Department')?.nomor
-    }
   ];
 
   for (const user of penggunaData) {
