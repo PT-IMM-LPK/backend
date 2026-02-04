@@ -99,9 +99,9 @@ const options = {
             },
             role: {
               type: 'string',
-              enum: ['KARYAWAN', 'SUPERVISOR', 'ADMIN', 'SUPER_ADMIN'],
+              enum: ['ADMIN', 'SUPER_ADMIN'],
               description: 'Role pengguna',
-              example: 'KARYAWAN'
+              example: 'ADMIN'
             },
             departemenId: {
               type: 'integer',
@@ -160,9 +160,9 @@ const options = {
             },
             role: {
               type: 'string',
-              enum: ['KARYAWAN', 'SUPERVISOR', 'ADMIN', 'SUPER_ADMIN'],
+              enum: ['ADMIN', 'SUPER_ADMIN'],
               description: 'Role pengguna',
-              example: 'KARYAWAN'
+              example: 'ADMIN'
             }
           }
         },

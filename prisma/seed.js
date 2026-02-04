@@ -14,12 +14,6 @@ async function main() {
   const departemenData = [
     { namaDepartemen: 'IT Department' },
     { namaDepartemen: 'HR Department' },
-    { namaDepartemen: 'Finance Department' },
-    { namaDepartemen: 'Marketing Department' },
-    { namaDepartemen: 'Operations Department' },
-    { namaDepartemen: 'Sales Department' },
-    { namaDepartemen: 'Logistics Department' },
-    { namaDepartemen: 'Quality Assurance' }
   ];
 
   for (const dept of departemenData) {
@@ -42,20 +36,20 @@ async function main() {
 
   const penggunaData = [
     {
-      nama: 'Super Admin',
-      email: 'superadmin@lpkimm.com',
+      nama: 'Naufal',
+      email: 'example@lpkimm.com',
       password: hashedPassword,
       nomorTelepon: '081234567890',
-      tanggalLahir: new Date('1985-01-15'),
+      tanggalLahir: new Date('10-10-2000'),
       role: 'SUPER_ADMIN',
       departemenId: departemenList.find(d => d.namaDepartemen === 'IT Department')?.nomor
     },
     {
-      nama: 'Admin User',
-      email: 'admin@lpkimm.com',
+      nama: 'Andi',
+      email: 'example2@lpkimm.com',
       password: hashedPassword,
       nomorTelepon: '081234567891',
-      tanggalLahir: new Date('1988-05-20'),
+      tanggalLahir: new Date('11-11-2000'),
       role: 'ADMIN',
       departemenId: departemenList.find(d => d.namaDepartemen === 'IT Department')?.nomor
     },
