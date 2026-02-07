@@ -32,24 +32,26 @@ async function main() {
   // ==========================================
   console.log('👤 Membuat pengguna...');
 
-  const hashedPassword = await bcrypt.hash('password123', 10);
-
+  // Password format: nama (lowercase) + tanggalLahir (ddmmyyyy)
+  // Naufal: naufal10102000
+  // Andi: andi11112000
+  
   const penggunaData = [
     {
       nama: 'Naufal',
-      email: 'example@lpkimm.com',
-      password: hashedPassword,
-      nomorTelepon: '081234567890',
-      tanggalLahir: new Date('10-10-2000'),
+      email: 'andrianau26@gmail.com',
+      password: await bcrypt.hash('naufal26082004', 10),
+      nomorTelepon: '0895413005858',
+      tanggalLahir: new Date('2004-08-26'),
       role: 'SUPER_ADMIN',
       departemenId: departemenList.find(d => d.namaDepartemen === 'IT Department')?.nomor
     },
     {
       nama: 'Andi',
       email: 'example2@lpkimm.com',
-      password: hashedPassword,
+      password: await bcrypt.hash('andi11112000', 10),
       nomorTelepon: '081234567891',
-      tanggalLahir: new Date('11-11-2000'),
+      tanggalLahir: new Date('2000-11-11'),
       role: 'ADMIN',
       departemenId: departemenList.find(d => d.namaDepartemen === 'IT Department')?.nomor
     },
@@ -58,7 +60,13 @@ async function main() {
   for (const user of penggunaData) {
     await prisma.pengguna.upsert({
       where: { email: user.email },
-      update: {},
+      update: {
+        password: user.password,
+        nomorTelepon: user.nomorTelepon,
+        tanggalLahir: user.tanggalLahir,
+        role: user.role,
+        departemenId: user.departemenId,
+      },
       create: user
     });
   }
@@ -76,12 +84,14 @@ async function main() {
   console.log(`   Pengguna   : ${penggunaList.length}`);
   console.log('═══════════════════════════════════════');
   console.log('\n🎉 Seeding selesai!\n');
-  console.log('📝 Akun untuk testing:');
-  console.log('   Email    : superadmin@lpkimm.com');
-  console.log('   Password : password123');
+  console.log('📝 Akun untuk testing (Admin/SuperAdmin):');
+  console.log('   Naufal (SUPER_ADMIN):');
+  console.log('     Nomor Telepon : 081234567890');
+  console.log('     Password      : naufal10102000');
   console.log('');
-  console.log('   Email    : admin@lpkimm.com');
-  console.log('   Password : password123');
+  console.log('   Andi (ADMIN):');
+  console.log('     Nomor Telepon : 081234567891');
+  console.log('     Password      : andi11112000');
   console.log('');
 }
 

@@ -39,6 +39,7 @@ model Pengguna {
   password      String    // Untuk login (di-hash)
   tanggalLahir  DateTime?
   role          Role      @default(KARYAWAN)
+  isDeleted     Boolean   @default(false) // Soft delete flag
   
   // Foreign Key ke Departemen
   departemenId  Int?

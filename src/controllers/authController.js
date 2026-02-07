@@ -84,19 +84,19 @@ exports.register = async (req, res, next) => {
 // Login
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { nomorTelepon, password } = req.body;
 
     // Validasi input
-    if (!email || !password) {
+    if (!nomorTelepon || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Email dan password wajib diisi'
+        message: 'Nomor telepon dan password wajib diisi'
       });
     }
 
-    // Cari user berdasarkan email
-    const user = await prisma.pengguna.findUnique({
-      where: { email },
+    // Cari user berdasarkan nomor telepon
+    const user = await prisma.pengguna.findFirst({
+      where: { nomorTelepon },
       include: {
         departemen: {
           select: {
@@ -110,7 +110,15 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Email atau password salah'
+        message: 'Nomor telepon atau password salah'
+      });
+    }
+
+    // Cek apakah role adalah ADMIN atau SUPER_ADMIN
+    if (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
+      return res.status(403).json({
+        success: false,
+        message: 'Hanya Admin dan Super Admin yang dapat login'
       });
     }
 
@@ -120,7 +128,7 @@ exports.login = async (req, res, next) => {
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Email atau password salah'
+        message: 'Nomor telepon atau password salah'
       });
     }
 

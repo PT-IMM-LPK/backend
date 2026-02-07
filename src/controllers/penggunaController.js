@@ -7,7 +7,9 @@ exports.getAll = async (req, res, next) => {
     const { role, departemenId, search } = req.query;
 
     // Build where clause
-    const where = {};
+    const where = {
+      isDeleted: false // Filter out soft-deleted users
+    };
 
     if (role) {
       where.role = role;
@@ -111,6 +113,40 @@ exports.create = async (req, res, next) => {
       role
     } = req.body;
 
+    // Check for duplicate phone number
+    if (nomorTelepon) {
+      const existingPhone = await prisma.pengguna.findFirst({
+        where: {
+          nomorTelepon,
+          isDeleted: false
+        }
+      });
+
+      if (existingPhone) {
+        return res.status(400).json({
+          success: false,
+          message: 'Nomor telepon sudah digunakan oleh pengguna lain'
+        });
+      }
+    }
+
+    // Check for duplicate email
+    if (email) {
+      const existingEmail = await prisma.pengguna.findFirst({
+        where: {
+          email,
+          isDeleted: false
+        }
+      });
+
+      if (existingEmail) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email sudah digunakan oleh pengguna lain'
+        });
+      }
+    }
+
     // Hash password
     const hashedPassword = await bcrypt.hash(password || 'password123', 10);
 
@@ -172,8 +208,44 @@ exports.update = async (req, res, next) => {
     if (departemenId !== undefined) {
       updateData.departemenId = departemenId ? parseInt(departemenId) : null;
     }
-    if (role && req.user.role === 'ADMIN') {
+    if (role && req.user.role === 'Admin') {
       updateData.role = role;
+    }
+
+    // Check for duplicate phone number (exclude current user)
+    if (nomorTelepon) {
+      const existingPhone = await prisma.pengguna.findFirst({
+        where: {
+          nomorTelepon,
+          isDeleted: false,
+          NOT: { nomor: parseInt(id) }
+        }
+      });
+
+      if (existingPhone) {
+        return res.status(400).json({
+          success: false,
+          message: 'Nomor telepon sudah digunakan oleh pengguna lain'
+        });
+      }
+    }
+
+    // Check for duplicate email (exclude current user)
+    if (email) {
+      const existingEmail = await prisma.pengguna.findFirst({
+        where: {
+          email,
+          isDeleted: false,
+          NOT: { nomor: parseInt(id) }
+        }
+      });
+
+      if (existingEmail) {
+        return res.status(400).json({
+          success: false,
+          message: 'Email sudah digunakan oleh pengguna lain'
+        });
+      }
     }
 
     const pengguna = await prisma.pengguna.update({
@@ -206,13 +278,15 @@ exports.update = async (req, res, next) => {
   }
 };
 
-// Delete Pengguna (Admin only)
+// Delete Pengguna (Admin only) - Soft Delete
 exports.delete = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    await prisma.pengguna.delete({
-      where: { nomor: parseInt(id) }
+    // Soft delete: set isDeleted to true instead of deleting
+    await prisma.pengguna.update({
+      where: { nomor: parseInt(id) },
+      data: { isDeleted: true }
     });
 
     res.json({
